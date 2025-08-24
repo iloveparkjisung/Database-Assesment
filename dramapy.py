@@ -8,7 +8,7 @@ DB_NAME = 'dramadatabase.db'
 
 def print_parameter_query(fields:str, where:str, parameter):
     """ Prints the results for a parameter query in tabular form. """
-    db = sqlite3.connect(DB_NAME)
+    db = sqlite3.connect('dramadatabase.db')
     cursor = db.cursor()
     sql = ("SELECT " + fields + " FROM " + TABLES + " WHERE " + where)
     cursor.execute(sql,(parameter,))
@@ -24,7 +24,7 @@ TABLES = (" drama "
 def print_query(view_name:str):
     ''' Prints the specified view from the database in a table '''
     # Set up the connection to the database
-    db = sqlite3.connect(DB_NAME)
+    db = sqlite3.connect("dramadatabase.db")
     cursor = db.cursor()
     # Get the results from the view
     sql = "SELECT * FROM '" + view_name + "'"
@@ -51,16 +51,16 @@ while menu_option != 'DONE':
                         "Please type 'Exit' to exit the database\n"
                         'A  -   Search for dramas from countries available\n'
                         'EXIT   -   Bye Bye\n\n'
-                        "Where would you like to go? "
-                        )
-
-menu_option = menu_option.upper()
-if menu_option == 'A':
-    print("Here are the available countries to search from:\n"
-        "   -   China\n"
-        "   -   South Korea\n"
-        "   -   Philippines\n"
-        "   -   Thailand\n")
-    drama_country = input('Which country would you like to see?')
-    print_parameter_query("drama_name, release, country, episode, watched, rating", "country = ? ORDER BY release DESC", country)
+                        "Where would you like to go? ")
+    menu_option = menu_option.upper()
+    if menu_option == 'A':
+        print_query('All information')
+    if menu_option == 'B':
+        print("Here are the available countries to search from:\n"
+            "   -   China\n"
+            "   -   South Korea\n"
+            "   -   Philippines\n"
+            "   -   Thailand\n")
+        drama_country = input('Which country would you like to see? ')
+        print_parameter_query("drama_name, release, country, episode, watched, rating", "country = ? ORDER BY release DESC", country)
 
