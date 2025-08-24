@@ -40,5 +40,14 @@ def print_query(view_name:str):
 
 menu_option = ''
 while menu_option != 'DONE':
-    menu_option = input('Welcome to my drama database')
+    menu_option = input('Welcome to my drama database \n\n'
+                        'This menu contains information about drama:\n'
+                        '   - Names of dramas'
+                        '   - Dramas from countries [South Korea, Philipines, Thailand, China]'
+                        '   - Drama Ratings'
+                        '   - Drama released 2013 - upcoming'
+                        '   - Status of Drama'
+                        'Please enter a letter that is from A to navigate through the menu.\n'
+                        "Please type 'Exit' to exit the database"
+                        )
 
