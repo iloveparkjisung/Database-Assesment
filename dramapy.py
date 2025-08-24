@@ -42,12 +42,25 @@ menu_option = ''
 while menu_option != 'DONE':
     menu_option = input('Welcome to my drama database \n\n'
                         'This menu contains information about drama:\n'
-                        '   - Names of dramas'
-                        '   - Dramas from countries [South Korea, Philipines, Thailand, China]'
-                        '   - Drama Ratings'
-                        '   - Drama released 2013 - upcoming'
-                        '   - Status of Drama'
+                        '   - Names of dramas\n'
+                        '   - Dramas from countries [South Korea, Philippines, Thailand, China]\n'
+                        '   - Drama Ratings\n'
+                        '   - Drama released 2013 - upcoming\n'
+                        '   - Status of Drama\n\n'
                         'Please enter a letter that is from A to navigate through the menu.\n'
-                        "Please type 'Exit' to exit the database"
+                        "Please type 'Exit' to exit the database\n"
+                        'A  -   Search for dramas from countries available\n'
+                        'EXIT   -   Bye Bye\n\n'
+                        "Where would you like to go? "
                         )
+
+menu_option = menu_option.upper()
+if menu_option == 'A':
+    print("Here are the available countries to search from:\n"
+        "   -   China\n"
+        "   -   South Korea\n"
+        "   -   Philippines\n"
+        "   -   Thailand\n")
+    drama_country = input('Which country would you like to see?')
+    print_parameter_query("drama_name, release, country, episode, watched, rating", "country = ? ORDER BY release DESC", country)
 
