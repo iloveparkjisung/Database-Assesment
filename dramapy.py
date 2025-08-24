@@ -38,3 +38,7 @@ def print_query(view_name:str):
     print(tabulate(results,headings))
     db.close() 
 
+menu_option = ''
+while menu_option != 'DONE':
+    menu_option = input('Welcome to my drama database')
+
