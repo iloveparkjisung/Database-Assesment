@@ -64,6 +64,7 @@ while menu_option != 'DONE':
             "   -   Thailand\n")
         while True:
             drama_country = input('Which country would you like to see? ')
+            drama_country = drama_country.capitalize()
             db = sqlite3.connect(DB_NAME)
             cursor = db.cursor()
             cursor.execute("SELECT 1 FROM country WHERE UPPER(country) = ?", (drama_country.upper(),))
