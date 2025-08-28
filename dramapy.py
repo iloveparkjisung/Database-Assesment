@@ -40,7 +40,7 @@ def print_query(view_name:str):
 
 menu_option = ''
 while menu_option != 'DONE':
-    menu_option = input('Welcome to my drama database \n\n'
+    menu_option = input('\nWelcome to my drama database \n\n'
                         'This menu contains information about drama:\n'
                         '   - Names of dramas\n'
                         '   - Dramas from countries [South Korea, Philippines, Thailand, China]\n'
@@ -62,5 +62,15 @@ while menu_option != 'DONE':
             "   -   South Korea\n"
             "   -   Philippines\n"
             "   -   Thailand\n")
-        drama_country = input('Which country would you like to see? ')
-        print_parameter_query("drama_name, release, country, episode, watched, rating", "country = ? ORDER BY release DESC", drama_country)
+        while True:
+            drama_country = input('Which country would you like to see? ')
+            db = sqlite3.connect(DB_NAME)
+            cursor = db.cursor()
+            cursor.execute("SELECT 1 FROM country WHERE UPPER(country) = ?", (drama_country.upper(),))
+            exists = cursor.fetchone()
+            db.close()
+            if exists:
+                print_parameter_query("drama_name, release, country, episode, watched, rating", "country = ? ORDER BY release DESC", drama_country)
+                break
+            else:
+                print("Sorry unable to find country. Please check for the spelling")
