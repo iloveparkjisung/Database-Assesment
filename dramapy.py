@@ -49,7 +49,8 @@ while menu_option != 'DONE':
                         '   - Status of Drama\n\n'
                         'Please enter a letter that is from A to navigate through the menu.\n'
                         "Please type 'Exit' to exit the database\n"
-                        'A  -   Search for dramas from countries available\n'
+                        'A  -   View all information\n'
+                        'B  -   Search for dramas from countries available\n'
                         'EXIT   -   Bye Bye\n\n'
                         "Where would you like to go? ")
     menu_option = menu_option.upper()
@@ -62,5 +63,4 @@ while menu_option != 'DONE':
             "   -   Philippines\n"
             "   -   Thailand\n")
         drama_country = input('Which country would you like to see? ')
-        print_parameter_query("drama_name, release, country, episode, watched, rating", "country = ? ORDER BY release DESC", drama_country.upper())
-
+        print_parameter_query("drama_name, release, country, episode, watched, rating", "country = ? ORDER BY release DESC", drama_country)
