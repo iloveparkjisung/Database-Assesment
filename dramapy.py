@@ -51,6 +51,7 @@ while menu_option != 'DONE':
                         "Please type 'Exit' to exit the database\n"
                         'A  -   View all information\n'
                         'B  -   Search for dramas from countries available\n'
+                        'C  -   Search for years certain dramas were aired\n'
                         'EXIT   -   Bye Bye\n\n'
                         "Where would you like to go? ")
     menu_option = menu_option.upper()
@@ -75,3 +76,26 @@ while menu_option != 'DONE':
                 break
             else:
                 print("Sorry unable to find country. Please check for the spelling")
+    elif menu_option == 'C':
+        print("Here are the available countries to search from:\n"
+            "   -   0 [upcoming]\n"
+            "   -   2010\n"
+            "   -   2013\n"
+            "   -   Thailand\n"
+            "   -   Thailand\n"
+            "   -   Thailand\n"
+            "   -   Thailand\n"
+            "   -   Thailand\n")
+        while True:
+            drama_year = input('Which year would you like to see? ')
+            drama_year = drama_year.capitalize()
+            db = sqlite3.connect(DB_NAME)
+            cursor = db.cursor()
+            cursor.execute("SELECT 1 FROM country WHERE UPPER(release_year) = ?", (drama_year.upper(),))
+            exists = cursor.fetchone()
+            db.close()
+            if exists:
+                print_parameter_query("drama_name, release, country, episode, watched, rating", "relase_year = ? ORDER BY release DESC", drama_country)
+                break
+            else:
+                print("Sorry unable to find year. Please check if the year is right.")
