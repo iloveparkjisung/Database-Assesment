@@ -55,12 +55,12 @@ while menu_option != 'DONE':
     menu_option = menu_option.upper()
     if menu_option == 'A':
         print_query('All information')
-    if menu_option == 'B':
+    elif menu_option == 'B':
         print("Here are the available countries to search from:\n"
             "   -   China\n"
             "   -   South Korea\n"
             "   -   Philippines\n"
             "   -   Thailand\n")
         drama_country = input('Which country would you like to see? ')
-        print_parameter_query("drama_name, release, country, episode, watched, rating", "country = ? ORDER BY release DESC", country)
+        print_parameter_query("drama_name, release, country, episode, watched, rating", "country = ? ORDER BY release DESC", drama_country.upper())
 
