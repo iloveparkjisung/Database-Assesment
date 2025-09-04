@@ -1,6 +1,7 @@
 # Import the libraries to connect to the database and present the information in tables
 import sqlite3
 from tabulate import tabulate
+import easygui as eg
 
 # This is the filename of the database to be used
 DB_NAME = 'dramadatabase.db'
@@ -21,3 +22,4 @@ def print_query(view_name:str):
     # Print the results in a table with the headings
     print(tabulate(results,headings))
     db.close()
+
