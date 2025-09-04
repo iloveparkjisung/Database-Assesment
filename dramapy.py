@@ -78,24 +78,16 @@ while menu_option != 'DONE':
                 print("Sorry unable to find country. Please check for the spelling")
     elif menu_option == 'C':
         print("Here are the available countries to search from:\n"
-            "   -   0 [upcoming]\n"
-            "   -   2010\n"
-            "   -   2013\n"
-            "   -   Thailand\n"
-            "   -   Thailand\n"
-            "   -   Thailand\n"
-            "   -   Thailand\n"
-            "   -   Thailand\n")
+            "   -   0 [upcoming] , 2010 to 2025\n")
         while True:
             drama_year = input('Which year would you like to see? ')
-            drama_year = drama_year.capitalize()
             db = sqlite3.connect(DB_NAME)
             cursor = db.cursor()
-            cursor.execute("SELECT 1 FROM country WHERE UPPER(release_year) = ?", (drama_year.upper(),))
+            cursor.execute("SELECT 1 FROM release_year WHERE (release) = ?", (drama_year,))
             exists = cursor.fetchone()
             db.close()
             if exists:
-                print_parameter_query("drama_name, release, country, episode, watched, rating", "relase_year = ? ORDER BY release DESC", drama_country)
+                print_parameter_query("drama_name, release, country, episode, watched, rating", "release = ? ORDER BY release DESC", drama_year)
                 break
             else:
                 print("Sorry unable to find year. Please check if the year is right.")
