@@ -52,7 +52,13 @@ while menu_option != 'DONE':
                         'A  -   View all information\n'
                         'B  -   Search for dramas from countries available\n'
                         'C  -   Search for years certain dramas were aired\n'
-                        'EXIT   -   Bye Bye\n\n'
+                        'D  -   Print out ratings below 5\n'
+                        'E  -   Print out ratings 5 and above\n'
+                        'F  -   Top 10 South Korean Drama\n'
+                        'G  -   Top 10 Chinese Drama\n'
+                        'H  -   Top 10 Thailand Drama\n'
+                        'I  -   Top 10 Philippines Drama\n'
+                        'Done   -   Bye Bye\n\n'
                         "Where would you like to go? ")
     menu_option = menu_option.upper()
     if menu_option == 'A':
@@ -91,3 +97,19 @@ while menu_option != 'DONE':
                 break
             else:
                 print("Sorry unable to find year. Please check if the year is right.")
+    elif menu_option == 'D':
+        print_query("Rating below 5")
+    elif menu_option == 'E':
+        print_query("Rating 5 and over")
+    elif menu_option == 'F':
+        print_query("Top 10 South Korean Drama")
+    elif menu_option == 'G':
+        print_query("Top 10 Chinese Drama")
+    elif menu_option == 'H':
+        print_query("Top 10 Thailand Drama")
+    elif menu_option == 'I':
+        print_query("Top 10 Philippines Drama")
+    elif menu_option == 'DONE':
+        print('Thanks for using me! \nPlease come again!!!')
+    else:
+        print("\nPlease try again!")
