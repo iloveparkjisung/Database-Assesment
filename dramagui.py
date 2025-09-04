@@ -42,7 +42,7 @@ def setup_database():
         eg.exceptionbox(msg=f"A database error occurred: {e}", title="Database Error")
         # Return None to signal that a fatal error occurred.
         return None, None
-        
+
 def print_query(view_name:str):
     ''' Prints the specified view from the database in a table '''
     # Set up the connection to the database
@@ -62,4 +62,14 @@ def print_query(view_name:str):
 
 if __name__ == "__main__":
     conn , cursor = setup_database
+
+    if not conn:
+        exit()
+
+    while True:
+        choice = eg.buttonbox(
+            "Welcome to the Drama Database what would you like to do?",
+            "Main Menu",
+            choices=["Country","Year","Watched Status","Rating"]
+        )
 
