@@ -65,7 +65,7 @@ def print_query(view_name:str):
 
 def show_all (cursor):
     try:
-        cursor.exceute("SELECT drama_name, release, country, episode, watched, rating FROM drama")
+        cursor.execute("SELECT drama_name, release, country, episode, watched, rating FROM drama")
         rows = cursor.fetchall()
 
         if not rows:
