@@ -33,7 +33,7 @@ def setup_database():
                 FOREIGN KEY (watched_id) REFERENCES watched (watched_id) 
             );
         ''')
-        
+         
         # Commit the changes to save the table creation to the database file.
         conn.commit()
         
