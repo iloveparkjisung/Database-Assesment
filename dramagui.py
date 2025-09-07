@@ -63,6 +63,9 @@ def print_query(view_name:str):
     print(tabulate(results,headings))
     db.close()
 
+def show_all (cursor):
+    try:
+        cursor.exceute("s")
 if __name__ == "__main__":
     conn , cursor = setup_database()
 
@@ -73,6 +76,9 @@ if __name__ == "__main__":
         choice = eg.buttonbox(
             "Welcome to the Drama Database what would you like to do?",
             "Main Menu",
-            choices=["Country","Year","Watched Status","Rating","Exit"]
+            choices=["Show all drama","Country","Year","Watched Status","Rating","Exit"]
         )
+
+        if choice == "Show all drama"
+            show_all
 
