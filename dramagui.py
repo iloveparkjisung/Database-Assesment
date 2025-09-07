@@ -90,6 +90,5 @@ if __name__ == "__main__":
             choices=["Show all drama","Country","Year","Watched Status","Rating","Exit"]
         )
 
-        if choice == "Show all drama"
-            show_all
-
+        if choice == "Show all drama":
+            show_all(cursor)
