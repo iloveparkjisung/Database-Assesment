@@ -65,7 +65,15 @@ def print_query(view_name:str):
 
 def show_all (cursor):
     try:
-        cursor.exceute("s")
+        cursor.exceute("SELECT drama_name, release, country, episode, watched, rating FROM drama")
+        rows = cursor.fetchall()
+
+        if not rows:
+            eg.msgbox("No dramas found in the database.", "Drama List")
+            return
+
+        drama_list = ""
+
 if __name__ == "__main__":
     conn , cursor = setup_database()
 
