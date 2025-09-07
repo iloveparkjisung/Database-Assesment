@@ -21,14 +21,29 @@ def setup_database():
         
         # This prevents an error if you run the script multiple times.
         cursor.execute('''
-            CREATE TABLE IF TABLE NOT EXIST drama (
-            drama_name TEXT PRIMARY KEY,
-            release_id INTEGER FOREIGN KEY,
-            country_id INTEGER FOREIGN KEY,
-            episode    INTEGER NOT NULL UNIQIE,
-            watched_id INTEGER FOREIGN KEY,
-            rating     INTEGER NOT NULL UNIQUE,
+            CREATE TABLE IF NOT EXIST drama (
+                drama_name TEXT (35),
+                release_id INTEGER,
+                country_id INTEGER,
+                episode    INTEGER,
+                watched_id INTEGER,
+                rating     INTEGER,
+            PRIMARY KEY (
+                drama_name
+            ),
+            FOREIGN KEY (
+                release_id
             )
+            REFERENCES release_year (release_id),
+            FOREIGN KEY (
+                country_id
+            )
+            REFERENCES country (country_id),
+            FOREIGN KEY (
+                watched_id
+            )
+            REFERENCES watched (watched_id) 
+            );
         ''')
         
         # Commit the changes to save the table creation to the database file.
@@ -61,7 +76,7 @@ def print_query(view_name:str):
     db.close()
 
 if __name__ == "__main__":
-    conn , cursor = setup_database
+    conn , cursor = setup_database()
 
     if not conn:
         exit()
