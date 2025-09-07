@@ -74,6 +74,9 @@ def show_all (cursor):
 
         drama_list = ""
 
+    except sqlite3.Errr as e:
+        eg.exceptionbox(msg=f"Failed to retrieve dramas: {e}", title="Database Error")
+
 if __name__ == "__main__":
     conn , cursor = setup_database()
 
