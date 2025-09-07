@@ -90,7 +90,7 @@ def show_contacts(cursor):
         
         # Fetch all the results from the query as a list of tuples.
         rows = cursor.fetchall()
-
+ 
         if not rows:
             # If the list is empty, there are no contacts.
             eg.msgbox("No contacts found in the database.", "Contact List")
