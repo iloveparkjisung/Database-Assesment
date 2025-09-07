@@ -21,28 +21,16 @@ def setup_database():
         
         # This prevents an error if you run the script multiple times.
         cursor.execute('''
-            CREATE TABLE IF NOT EXIST drama (
-                drama_name TEXT (35),
+            CREATE TABLE IF NOT EXISTS drama (
+                drama_name TEXT PRIMARY KEY,
                 release_id INTEGER,
                 country_id INTEGER,
-                episode    INTEGER,
+                episode INTEGER,
                 watched_id INTEGER,
-                rating     INTEGER,
-            PRIMARY KEY (
-                drama_name
-            ),
-            FOREIGN KEY (
-                release_id
-            )
-            REFERENCES release_year (release_id),
-            FOREIGN KEY (
-                country_id
-            )
-            REFERENCES country (country_id),
-            FOREIGN KEY (
-                watched_id
-            )
-            REFERENCES watched (watched_id) 
+                rating INTEGER,
+                FOREIGN KEY (release_id) REFERENCES release_year (release_id),
+                FOREIGN KEY (country_id) REFERENCES country (country_id),
+                FOREIGN KEY (watched_id) REFERENCES watched (watched_id) 
             );
         ''')
         
@@ -85,6 +73,6 @@ if __name__ == "__main__":
         choice = eg.buttonbox(
             "Welcome to the Drama Database what would you like to do?",
             "Main Menu",
-            choices=["Country","Year","Watched Status","Rating"]
+            choices=["Country","Year","Watched Status","Rating","Exit"]
         )
 
