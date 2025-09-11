@@ -92,3 +92,7 @@ if __name__ == "__main__":
 
         if choice == "Show all drama":
             show_all(cursor)
+
+        elif choice == "Exit":
+            eg.msgbox("Thank you for using Drama Database") 
+            break #using break quits the code
