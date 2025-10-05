@@ -80,12 +80,17 @@ def show_all (cursor):
     except sqlite3.Error as e:
         eg.exceptionbox(msg=f"Failed to retrieve dramas: {e}", title="Database Error")
 
+
 def show_country (cursor):
     try:
         cursor.execute("SELECT drama_name, release, country, episode, watched, rating FROM drama")
         rows = cursor.fetchall()
+
         if country_choice == "China":
-            print("Hi")
+            
+            return
+    except sqlite3.Error as e:
+        eg.exceptionbox(msg=f"Failed to retrieve dramas: {e}", title="Database Error")
 
 
 if __name__ == "__main__":
@@ -105,7 +110,9 @@ if __name__ == "__main__":
             show_all(cursor)
         if choice == "Country":
             country_choice = eg.buttonbox(
-            "Pick a country to see:", Country , choices=["China" , "South Korea" , "Philippines" , "Thailand"]
+            "Pick a country to see:",
+            "Country",
+            choices=["China" , "South Korea" , "Philippines" , "Thailand"]
             )
 
 
