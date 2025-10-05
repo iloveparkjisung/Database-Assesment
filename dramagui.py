@@ -92,6 +92,16 @@ def show_country (cursor):
     except sqlite3.Error as e:
         eg.exceptionbox(msg=f"Failed to retrieve dramas: {e}", title="Database Error")
 
+def show_year (cursor):
+    try:
+        cursor.execute("SELECT drama_name, release, country, episode, watched, rating FROM drama")
+        rows = cursor.fetchall()
+
+        if country_choice == "China":
+            
+            return
+    except sqlite3.Error as e:
+        eg.exceptionbox(msg=f"Failed to retrieve dramas: {e}", title="Database Error")
 
 if __name__ == "__main__":
     conn , cursor = setup_database()
@@ -110,13 +120,28 @@ if __name__ == "__main__":
             show_all(cursor)
         if choice == "Country":
             country_choice = eg.buttonbox(
-            "Pick a country to see:",
-            "Country",
-            choices=["China" , "South Korea" , "Philippines" , "Thailand"]
+                "Pick a country to see:",
+                "Country",
+                choices=["China" , "South Korea" , "Philippines" , "Thailand"]
             )
-
-
-
+        if choice == "Year":
+            year_choice = eg.choicebox(
+                "Choose a year to see:",
+                "Year",
+                choices=["0","2010","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"]
+            )
+        if choice == "Watched Status":
+            status_choice = eg.buttonbox(
+                "Choose a status to see:",
+                "Watched Status",
+                choices=["Completed","Plan on watching" , "On-hold" , "Dropped"]
+            )
+        if choice == "Rating":
+            rating_choice = eg.buttonbox(
+                "Pick a rating",
+                "Rating",
+                choices=[]
+            )
         elif choice == "Exit":
             eg.msgbox("Thank you for using Drama Database") 
             break #using break quits the code
