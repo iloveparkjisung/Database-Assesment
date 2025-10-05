@@ -73,9 +73,20 @@ def show_all (cursor):
             return
 
         drama_list = ""
+        for row in rows:
+            drama_list += str(row) + "\n"
+        eg.msgbox(drama_list, "Drama List")
 
     except sqlite3.Error as e:
         eg.exceptionbox(msg=f"Failed to retrieve dramas: {e}", title="Database Error")
+
+def show_country (cursor):
+    try:
+        cursor.execute("SELECT drama_name, release, country, episode, watched, rating FROM drama")
+        rows = cursor.fetchall()
+        if country_choice == "China":
+            print("Hi")
+
 
 if __name__ == "__main__":
     conn , cursor = setup_database()
@@ -92,6 +103,12 @@ if __name__ == "__main__":
 
         if choice == "Show all drama":
             show_all(cursor)
+        if choice == "Country":
+            country_choice = eg.buttonbox(
+            "Pick a country to see:", Country , choices=["China" , "South Korea" , "Philippines" , "Thailand"]
+            )
+
+
 
         elif choice == "Exit":
             eg.msgbox("Thank you for using Drama Database") 
