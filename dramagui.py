@@ -20,6 +20,27 @@ def setup_database():
         cursor = conn.cursor()
         
         # This prevents an error if you run the script multiple times.
+
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS release_year (
+            release_id INTEGER PRIMARY KEY,
+            year TEXT
+        );
+        ''')
+
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS country (
+                country_id INTEGER PRIMARY KEY,
+                country_name TEXT
+            );
+        ''')
+
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS watched (
+                watched_id INTEGER PRIMARY KEY,
+                status TEXT
+            );
+        ''')
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS drama (
                 drama_name TEXT PRIMARY KEY,
@@ -65,9 +86,20 @@ def print_query(view_name:str):
 
 def show_all (cursor):
     try:
-        cursor.execute("SELECT drama_name, release, country, episode, watched, rating FROM drama")
+        cursor.execute("""
+            SELECT 
+                d.drama_name,
+                r.year AS release_year,
+                c.country_name,
+                d.episode,
+                w.status AS watched_status,
+                d.rating
+            FROM drama d
+            LEFT JOIN release_year r ON d.release_id = r.release_id
+            LEFT JOIN country c ON d.country_id = c.country_id
+            LEFT JOIN watched w ON d.watched_id = w.watched_id
+        """)
         rows = cursor.fetchall()
-
         if not rows:
             eg.msgbox("No dramas found in the database.", "Drama List")
             return
@@ -81,25 +113,79 @@ def show_all (cursor):
         eg.exceptionbox(msg=f"Failed to retrieve dramas: {e}", title="Database Error")
 
 
-def show_country (cursor):
+def show_country(cursor, country_choice):
     try:
-        cursor.execute("SELECT drama_name, release, country, episode, watched, rating FROM drama")
+        cursor.execute("""
+            SELECT drama.drama_name, drama.release_id, drama.country_id, drama.episode, drama.watched_id, drama.rating 
+            FROM drama
+            JOIN country ON drama.country_id = country.country_id
+            WHERE country.country_name = ?
+        """, (country_choice,))
         rows = cursor.fetchall()
 
-        if country_choice == "China":
-            
+        if not rows:
+            eg.msgbox(f"No dramas found from {country_choice}.", "Country Results")
             return
+
+        eg.msgbox(tabulate(rows, headers=["Drama", "Release", "Country", "Episodes", "Watched", "Rating"]),
+                  f"{country_choice} Dramas")
     except sqlite3.Error as e:
         eg.exceptionbox(msg=f"Failed to retrieve dramas: {e}", title="Database Error")
 
-def show_year (cursor):
+def show_year(cursor, year_choice):
     try:
-        cursor.execute("SELECT drama_name, release, country, episode, watched, rating FROM drama")
+        cursor.execute("""
+            SELECT d.drama_name, r.year, c.country_name, d.episode, w.status, d.rating
+            FROM drama d
+            JOIN country c ON d.country_id = c.country_id
+            JOIN release_year r ON d.release_id = r.release_id
+            JOIN watched w ON d.watched_id = w.watched_id
+            WHERE r.year = ?
+        """, (year_choice,))
         rows = cursor.fetchall()
-
-        if country_choice == "China":
-            
+        if not rows:
+            eg.msgbox(f"No dramas found from year {year_choice}.", "Year Results")
             return
+        eg.msgbox(tabulate(rows, headers=["Drama", "Year", "Country", "Episodes", "Watched", "Rating"]),
+                  f"Dramas from {year_choice}")
+    except sqlite3.Error as e:
+        eg.exceptionbox(msg=f"Failed to retrieve dramas: {e}", title="Database Error")
+
+def show_status(cursor, status_choice):
+    try:
+        cursor.execute("""
+            SELECT d.drama_name, r.year, c.country_name, d.episode, w.status, d.rating
+            FROM drama d
+            JOIN country c ON d.country_id = c.country_id
+            JOIN release_year r ON d.release_id = r.release_id
+            JOIN watched w ON d.watched_id = w.watched_id
+            WHERE w.status = ?
+        """, (status_choice,))
+        rows = cursor.fetchall()
+        if not rows:
+            eg.msgbox(f"No dramas found with status {status_choice}.", "Status Results")
+            return
+        eg.msgbox(tabulate(rows, headers=["Drama", "Year", "Country", "Episodes", "Watched", "Rating"]),
+                  f"Dramas with status {status_choice}")
+    except sqlite3.Error as e:
+        eg.exceptionbox(msg=f"Failed to retrieve dramas: {e}", title="Database Error")
+
+def show_rating(cursor, rating_choice):
+    try:
+        cursor.execute("""
+            SELECT d.drama_name, r.year, c.country_name, d.episode, w.status, d.rating
+            FROM drama d
+            JOIN country c ON d.country_id = c.country_id
+            JOIN release_year r ON d.release_id = r.release_id
+            JOIN watched w ON d.watched_id = w.watched_id
+            WHERE d.rating = ?
+        """, (rating_choice,))
+        rows = cursor.fetchall()
+        if not rows:
+            eg.msgbox(f"No dramas found with rating {rating_choice}.", "Rating Results")
+            return
+        eg.msgbox(tabulate(rows, headers=["Drama", "Year", "Country", "Episodes", "Watched", "Rating"]),
+                  f"Dramas with rating {rating_choice}")
     except sqlite3.Error as e:
         eg.exceptionbox(msg=f"Failed to retrieve dramas: {e}", title="Database Error")
 
@@ -118,30 +204,39 @@ if __name__ == "__main__":
 
         if choice == "Show all drama":
             show_all(cursor)
-        if choice == "Country":
+            
+        elif choice == "Country":
             country_choice = eg.buttonbox(
                 "Pick a country to see:",
                 "Country",
                 choices=["China" , "South Korea" , "Philippines" , "Thailand"]
             )
-        if choice == "Year":
+            if country_choice:
+                show_country(cursor, country_choice)
+        elif choice == "Year":
             year_choice = eg.choicebox(
                 "Choose a year to see:",
                 "Year",
-                choices=["0","2010","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"]
+                choices=["2010","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"]
             )
-        if choice == "Watched Status":
+            if year_choice:
+                show_year(cursor, year_choice)
+        elif choice == "Watched Status":
             status_choice = eg.buttonbox(
                 "Choose a status to see:",
                 "Watched Status",
                 choices=["Completed","Plan on watching" , "On-hold" , "Dropped"]
             )
-        if choice == "Rating":
+            if status_choice:
+                show_status(cursor, status_choice)
+        elif choice == "Rating":
             rating_choice = eg.buttonbox(
                 "Pick a rating",
                 "Rating",
-                choices=[]
+                choices=[str(i) for i in range(1, 11)]
             )
+            if rating_choice:
+                show_rating(cursor, int(rating_choice))
         elif choice == "Exit":
             eg.msgbox("Thank you for using Drama Database") 
-            break #using break quits the code
+            break
