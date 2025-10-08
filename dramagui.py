@@ -87,17 +87,15 @@ def print_query(view_name:str):
 def show_all (cursor):
     try:
         cursor.execute("""
-            SELECT 
-                d.drama_name,
-                r.year AS release_year,
-                c.country_name,
-                d.episode,
-                w.status AS watched_status,
-                d.rating
-            FROM drama d
-            LEFT JOIN release_year r ON d.release_id = r.release_id
-            LEFT JOIN country c ON d.country_id = c.country_id
-            LEFT JOIN watched w ON d.watched_id = w.watched_id
+            SELECT drama_name, release, country, episode, watched, rating
+                FROM drama
+                LEFT JOIN
+                release_year ON drama.release_id = release_year.release_id
+                LEFT JOIN
+                country ON drama.country_id = country.country_id
+                LEFT JOIN
+                watched ON drama.watched_id = watched.watched_id
+                ORDER BY release ASC
         """)
         rows = cursor.fetchall()
         if not rows:
@@ -111,7 +109,6 @@ def show_all (cursor):
 
     except sqlite3.Error as e:
         eg.exceptionbox(msg=f"Failed to retrieve dramas: {e}", title="Database Error")
-
 
 def show_country(cursor, country_choice):
     try:
@@ -135,18 +132,21 @@ def show_country(cursor, country_choice):
 def show_year(cursor, year_choice):
     try:
         cursor.execute("""
-            SELECT d.drama_name, r.year, c.country_name, d.episode, w.status, d.rating
-            FROM drama d
-            JOIN country c ON d.country_id = c.country_id
-            JOIN release_year r ON d.release_id = r.release_id
-            JOIN watched w ON d.watched_id = w.watched_id
-            WHERE r.year = ?
+            SELECT drama_name, release, country, episode, watched, rating
+            FROM drama
+            LEFT JOIN
+            release_year ON drama.release_id = release_year.release_id
+            LEFT JOIN
+            country ON drama.country_id = country.country_id
+            LEFT JOIN
+            watched ON drama.watched_id = watched.watched_id
+            WHERE year = ?
         """, (year_choice,))
         rows = cursor.fetchall()
         if not rows:
             eg.msgbox(f"No dramas found from year {year_choice}.", "Year Results")
             return
-        eg.msgbox(tabulate(rows, headers=["Drama", "Year", "Country", "Episodes", "Watched", "Rating"]),
+        eg.msgbox(tabulate(rows, headers=["Drama", "Release", "Country", "Episodes", "Watched", "Rating"]),
                   f"Dramas from {year_choice}")
     except sqlite3.Error as e:
         eg.exceptionbox(msg=f"Failed to retrieve dramas: {e}", title="Database Error")
@@ -154,18 +154,22 @@ def show_year(cursor, year_choice):
 def show_status(cursor, status_choice):
     try:
         cursor.execute("""
-            SELECT d.drama_name, r.year, c.country_name, d.episode, w.status, d.rating
-            FROM drama d
-            JOIN country c ON d.country_id = c.country_id
-            JOIN release_year r ON d.release_id = r.release_id
-            JOIN watched w ON d.watched_id = w.watched_id
-            WHERE w.status = ?
+            SELECT drama_name, release, country, episode, watched, rating
+            FROM drama
+            LEFT JOIN
+            release_year ON drama.release_id = release_year.release_id
+            LEFT JOIN
+            country ON drama.country_id = country.country_id
+            LEFT JOIN
+            watched ON drama.watched_id = watched.watched_id
+            WHERE watched = ?
+            ORDER BY release ASC
         """, (status_choice,))
         rows = cursor.fetchall()
         if not rows:
             eg.msgbox(f"No dramas found with status {status_choice}.", "Status Results")
             return
-        eg.msgbox(tabulate(rows, headers=["Drama", "Year", "Country", "Episodes", "Watched", "Rating"]),
+        eg.msgbox(tabulate(rows, headers=["Drama", "Release", "Country", "Episodes", "Watched", "Rating"]),
                   f"Dramas with status {status_choice}")
     except sqlite3.Error as e:
         eg.exceptionbox(msg=f"Failed to retrieve dramas: {e}", title="Database Error")
@@ -173,18 +177,21 @@ def show_status(cursor, status_choice):
 def show_rating(cursor, rating_choice):
     try:
         cursor.execute("""
-            SELECT d.drama_name, r.year, c.country_name, d.episode, w.status, d.rating
-            FROM drama d
-            JOIN country c ON d.country_id = c.country_id
-            JOIN release_year r ON d.release_id = r.release_id
-            JOIN watched w ON d.watched_id = w.watched_id
-            WHERE d.rating = ?
+            SELECT drama_name, release, country, episode, watched, rating
+            FROM drama
+            LEFT JOIN
+            release_year ON drama.release_id = release_year.release_id
+            LEFT JOIN
+            country ON drama.country_id = country.country_id
+            LEFT JOIN
+            watched ON drama.watched_id = watched.watched_id
+            WHERE rating = ?
         """, (rating_choice,))
         rows = cursor.fetchall()
         if not rows:
             eg.msgbox(f"No dramas found with rating {rating_choice}.", "Rating Results")
             return
-        eg.msgbox(tabulate(rows, headers=["Drama", "Year", "Country", "Episodes", "Watched", "Rating"]),
+        eg.msgbox(tabulate(rows, headers=["Drama", "Release", "Country", "Episodes", "Watched", "Rating"]),
                   f"Dramas with rating {rating_choice}")
     except sqlite3.Error as e:
         eg.exceptionbox(msg=f"Failed to retrieve dramas: {e}", title="Database Error")
