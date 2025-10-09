@@ -309,7 +309,7 @@ def add_drama(cursor, conn):
         return
 
 
-    countries = ["China", "South Korea", "Philippines", "Thailand"]
+    countries = ["China", "South Korea", "Philippines", "Thailand","Japan"]
     country = eg.choicebox("Select country:", "Add Drama", choices=countries)
     if not country:
         return
