@@ -418,4 +418,3 @@ if __name__ == "__main__":
         elif choice == "Exit":
             eg.msgbox("Thank you for using Drama Database")
             break
-
