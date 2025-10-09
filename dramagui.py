@@ -3,7 +3,6 @@ import sqlite3
 from tabulate import tabulate
 import easygui as eg
 
-
 # This is the filename of the database to be used
 DB_NAME = 'dramadatabase.db'
 def setup_database():
@@ -22,7 +21,6 @@ def setup_database():
        
         # This prevents an error if you run the script multiple times.
 
-
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS release_year (
             release_id INTEGER PRIMARY KEY,
@@ -30,14 +28,12 @@ def setup_database():
         );
         ''')
 
-
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS country (
                 country_id INTEGER PRIMARY KEY,
                 country TEXT
             );
         ''')
-
 
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS watched (
@@ -71,7 +67,6 @@ def setup_database():
         # Return None to signal that a fatal error occurred.
         return None, None
 
-
 def print_query(view_name:str):
     ''' Prints the specified view from the database in a table '''
     # Set up the connection to the database
@@ -88,7 +83,6 @@ def print_query(view_name:str):
     # Print the results in a table with the headings
     print(tabulate(results,headings))
     db.close()
-
 
 def show_all (cursor):
     try:
@@ -108,30 +102,23 @@ def show_all (cursor):
             eg.msgbox("No dramas found in the database.", "Drama List")
             return
 
-
         col_widths = [40, 8, 15, 10, 20, 8]  
         headers = ["Drama", "Rating", "Country", "Episodes", "Watched", "Release"]
 
-
         header_row = "".join(h.ljust(col_widths[i]) for i, h in enumerate(headers))
         line = "-" * sum(col_widths)
-
 
         formatted_rows = []
         for row in rows:
             formatted_row = "".join(str(col)[:col_widths[i]-1].ljust(col_widths[i]) for i, col in enumerate(row))
             formatted_rows.append(formatted_row)
 
-
         output = f"{header_row}\n{line}\n" + "\n".join(formatted_rows)
-
 
         eg.codebox(f"All the Dramas {show_all}", "All the Dramas", output)
 
-
     except sqlite3.Error as e:
         eg.exceptionbox(msg=f"Failed to retrieve dramas: {e}", title="Database Error")
-
 
 def show_country(cursor, country_choice):
     try:
@@ -145,35 +132,27 @@ def show_country(cursor, country_choice):
         """, (country_choice,))
         rows = cursor.fetchall()
 
-
         if not rows:
             eg.msgbox(f"No dramas found from {country_choice}.", "Country Results")
             return
 
-
         col_widths = [40, 8, 15, 10, 20, 8]  
         headers = ["Drama", "Rating", "Country", "Episodes", "Watched", "Release"]
 
-
         header_row = "".join(h.ljust(col_widths[i]) for i, h in enumerate(headers))
         line = "-" * sum(col_widths)
-
 
         formatted_rows = []
         for row in rows:
             formatted_row = "".join(str(col)[:col_widths[i]-1].ljust(col_widths[i]) for i, col in enumerate(row))
             formatted_rows.append(formatted_row)
 
-
         output = f"{header_row}\n{line}\n" + "\n".join(formatted_rows)
-
 
         eg.codebox(f"Dramas that are from {country_choice}", "Country", output)
 
-
     except sqlite3.Error as e:
         eg.exceptionbox(msg=f"Failed to retrieve dramas: {e}", title="Database Error")
-
 
 def show_year(cursor, year_choice):
     try:
@@ -192,29 +171,23 @@ def show_year(cursor, year_choice):
         if not rows:
             eg.msgbox(f"No dramas found from year {year_choice}.", "Year Results")
             return
-        col_widths = [40, 8, 15, 10, 20, 8]  
-        headers = ["Drama", "Rating", "Country", "Episodes", "Watched", "Release"]
-
+        col_widths = [35, 8, 15, 10, 20, 7]  
+        headers = ["Drama", "Release", "Country", "Episodes", "Watched"]
 
         header_row = "".join(h.ljust(col_widths[i]) for i, h in enumerate(headers))
         line = "-" * sum(col_widths)
-
 
         formatted_rows = []
         for row in rows:
             formatted_row = "".join(str(col)[:col_widths[i]-1].ljust(col_widths[i]) for i, col in enumerate(row))
             formatted_rows.append(formatted_row)
 
-
         output = f"{header_row}\n{line}\n" + "\n".join(formatted_rows)
-
 
         eg.codebox(f"Dramas that are from {year_choice}", "Years", output)
 
-
     except sqlite3.Error as e:
         eg.exceptionbox(msg=f"Failed to retrieve dramas: {e}", title="Database Error")
-
 
 def show_watched(cursor, watched_choice):
     try:
@@ -237,24 +210,19 @@ def show_watched(cursor, watched_choice):
         col_widths = [40, 8, 15, 10, 20, 8]  
         headers = ["Drama", "Rating", "Country", "Episodes", "Watched", "Release"]
 
-
         header_row = "".join(h.ljust(col_widths[i]) for i, h in enumerate(headers))
         line = "-" * sum(col_widths)
-
 
         formatted_rows = []
         for row in rows:
             formatted_row = "".join(str(col)[:col_widths[i]-1].ljust(col_widths[i]) for i, col in enumerate(row))
             formatted_rows.append(formatted_row)
 
-
         output = f"{header_row}\n{line}\n" + "\n".join(formatted_rows)
-
 
         eg.codebox(f"Dramas you {watched_choice}", "Watched Status Results", output)
     except sqlite3.Error as e:
         eg.exceptionbox(msg=f"Failed to retrieve dramas: {e}", title="Database Error")
-
 
 def show_rating(cursor, rating_choice):
     try:
@@ -276,60 +244,48 @@ def show_rating(cursor, rating_choice):
         col_widths = [40, 8, 15, 10, 20, 8]  
         headers = ["Drama", "Rating", "Country", "Episodes", "Watched", "Release"]
 
-
         header_row = "".join(h.ljust(col_widths[i]) for i, h in enumerate(headers))
         line = "-" * sum(col_widths)
-
 
         formatted_rows = []
         for row in rows:
             formatted_row = "".join(str(col)[:col_widths[i]-1].ljust(col_widths[i]) for i, col in enumerate(row))
             formatted_rows.append(formatted_row)
 
-
         output = f"{header_row}\n{line}\n" + "\n".join(formatted_rows)
-
 
         eg.codebox(f"Dramas with rating {rating_choice}", "Rating Results", output)
 
-
     except sqlite3.Error as e:
         eg.exceptionbox(msg=f"Failed to retrieve dramas: {e}", title="Database Error")
-
 
 def add_drama(cursor, conn):
     drama_name = eg.enterbox("Enter drama name:", "Add Drama")
     if not drama_name:
         return
 
-
     release_years = [str(y) for y in range(2010, 2026)]
     release = eg.choicebox("Select release year:", "Add Drama", choices=release_years)
     if not release:
         return
-
 
     countries = ["China", "South Korea", "Philippines", "Thailand","Japan"]
     country = eg.choicebox("Select country:", "Add Drama", choices=countries)
     if not country:
         return
 
-
     episode = eg.integerbox("Enter number of episodes:", "Add Drama", lowerbound=1, upperbound=10000 )
     if episode is None:
         return
-
 
     watched_statuses = ["Watched", "Plan on Watching", "On-Hold", "Dropped"]
     watched = eg.choicebox("Select watched status:", "Add Drama", choices=watched_statuses)
     if not watched:
         return
 
-
     rating = eg.integerbox("Enter rating (1-10):", "Add Drama", lowerbound=1, upperbound=10)
     if rating is None:
         return
-
 
     cursor.execute("SELECT release_id FROM release_year WHERE release = ?", (release,))
     release_id = cursor.fetchone()
@@ -337,20 +293,17 @@ def add_drama(cursor, conn):
         eg.msgbox("Release year not found in database.", "Error")
         return
 
-
     cursor.execute("SELECT country_id FROM country WHERE country = ?", (country,))
     country_id = cursor.fetchone()
     if not country_id:
         eg.msgbox("Country not found in database.", "Error")
         return
 
-
     cursor.execute("SELECT watched_id FROM watched WHERE watched = ?", (watched,))
     watched_id = cursor.fetchone()
     if not watched_id:
         eg.msgbox("Watched status not found in database.", "Error")
         return
-
 
     try:
         cursor.execute("""
@@ -362,14 +315,11 @@ def add_drama(cursor, conn):
     except sqlite3.Error as e:
         eg.exceptionbox(msg=f"Failed to add drama: {e}", title="Database Error")
 
-
 if __name__ == "__main__":
     conn , cursor = setup_database()
 
-
     if not conn:
         exit()
-
 
     while True:
         choice = eg.buttonbox(
@@ -377,8 +327,6 @@ if __name__ == "__main__":
             "Main Menu",
             choices=["Show all drama","Country","Year","Watched Status","Rating","Add Drama","Exit"]
         )
-
-
         if choice == "Show all drama":
             show_all(cursor)
         elif choice == "Add Drama":
