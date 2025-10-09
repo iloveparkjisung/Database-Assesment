@@ -315,7 +315,7 @@ def add_drama(cursor, conn):
         return
 
 
-    episode = eg.integerbox("Enter number of episodes:", "Add Drama", lowerbound=1)
+    episode = eg.integerbox("Enter number of episodes:", "Add Drama", lowerbound=1, upperbound=10000 )
     if episode is None:
         return
 
