@@ -136,8 +136,8 @@ def show_country(cursor, country_choice):
             eg.msgbox(f"No dramas found from {country_choice}.", "Country Results")
             return
 
-        col_widths = [40, 8, 15, 10, 20, 8]  
-        headers = ["Drama", "Rating", "Country", "Episodes", "Watched", "Release"]
+        col_widths = [45, 8, 15, 10]  
+        headers = ["Drama", "Release", "Country", "Episodes"]
 
         header_row = "".join(h.ljust(col_widths[i]) for i, h in enumerate(headers))
         line = "-" * sum(col_widths)
@@ -171,7 +171,7 @@ def show_year(cursor, year_choice):
         if not rows:
             eg.msgbox(f"No dramas found from year {year_choice}.", "Year Results")
             return
-        col_widths = [35, 8, 15, 10, 20, 7]  
+        col_widths = [35, 8, 20, 8, 10]  
         headers = ["Drama", "Release", "Country", "Episodes", "Watched"]
 
         header_row = "".join(h.ljust(col_widths[i]) for i, h in enumerate(headers))
@@ -207,8 +207,8 @@ def show_watched(cursor, watched_choice):
         if not rows:
             eg.msgbox(f"No dramas found with status {watched_choice}.", "Status Results")
             return
-        col_widths = [40, 8, 15, 10, 20, 8]  
-        headers = ["Drama", "Rating", "Country", "Episodes", "Watched", "Release"]
+        col_widths = [35, 8, 20, 10, 14]  
+        headers = ["Drama", "Rating", "Country", "Episodes", "Watched"]
 
         header_row = "".join(h.ljust(col_widths[i]) for i, h in enumerate(headers))
         line = "-" * sum(col_widths)
@@ -264,7 +264,7 @@ def add_drama(cursor, conn):
     if not drama_name:
         return
 
-    release_years = [str(y) for y in range(2010, 2026)]
+    release_years = [str(y) for y in range(2010, 2030)]
     release = eg.choicebox("Select release year:", "Add Drama", choices=release_years)
     if not release:
         return
@@ -274,7 +274,7 @@ def add_drama(cursor, conn):
     if not country:
         return
 
-    episode = eg.integerbox("Enter number of episodes:", "Add Drama", lowerbound=1, upperbound=10000 )
+    episode = eg.integerbox("Enter number of episodes:", "Add Drama", lowerbound=0, upperbound=10000 )
     if episode is None:
         return
 
@@ -343,7 +343,7 @@ if __name__ == "__main__":
             year_choice = eg.choicebox(
                 "Choose a year to see:",
                 "Year",
-                choices=[str(i) for i in range(2010, 2026)]
+                choices=[str(i) for i in range(2010, 2030)]
             )
             if year_choice:
                 show_year(cursor, year_choice)
