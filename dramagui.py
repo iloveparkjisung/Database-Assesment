@@ -126,7 +126,7 @@ def show_all (cursor):
         output = f"{header_row}\n{line}\n" + "\n".join(formatted_rows)
 
 
-        eg.codebox(f"Dramas with rating {rating_choice}", "Rating Results", output)
+        eg.codebox(f"All the Dramas {show_all}", "All the Dramas", output)
 
 
     except sqlite3.Error as e:
