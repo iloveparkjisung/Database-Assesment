@@ -387,7 +387,7 @@ if __name__ == "__main__":
             country_choice = eg.buttonbox(
                 "Pick a country to see:",
                 "Country",
-                choices=["China" , "South Korea" , "Philippines" , "Thailand"]
+                choices=["China" , "South Korea" , "Philippines" , "Thailand", "Japan"]
             )
             if country_choice:
                 show_country(cursor, country_choice)
