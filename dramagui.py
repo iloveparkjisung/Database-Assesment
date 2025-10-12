@@ -84,7 +84,7 @@ def print_query(view_name:str):
     print(tabulate(results,headings))
     db.close()
 
-def show_all (cursor):
+def show_all (cursor): #this shows everything the database has
     try:
         cursor.execute("""
             SELECT drama_name, release, country, episode, watched, rating
