@@ -97,12 +97,12 @@ def show_all (cursor): #this shows everything the database has
                 watched ON drama.watched_id = watched.watched_id
                 ORDER BY release ASC
         """)
-        rows = cursor.fetchall()
+        rows = cursor.fetchall() #this fetches the information
         if not rows:
             eg.msgbox("No dramas found in the database.", "Drama List")
             return
 
-        col_widths = [40, 8, 15, 10, 20, 8]  
+        col_widths = [40, 8, 15, 10, 20, 8]  #this is technically a format on how the information would appear
         headers = ["Drama", "Rating", "Country", "Episodes", "Watched", "Release"]
 
         header_row = "".join(h.ljust(col_widths[i]) for i, h in enumerate(headers))
@@ -117,7 +117,7 @@ def show_all (cursor): #this shows everything the database has
 
         eg.codebox(f"All the Dramas {show_all}", "All the Dramas", output)
 
-    except sqlite3.Error as e:
+    except sqlite3.Error as e: #this gets displayed if the database somehow breaks
         eg.exceptionbox(msg=f"Failed to retrieve dramas: {e}", title="Database Error")
 
 def show_country(cursor, country_choice):
@@ -129,10 +129,10 @@ def show_country(cursor, country_choice):
             LEFT JOIN country ON drama.country_id = country.country_id
             WHERE country = ?
             ORDER BY release ASC
-        """, (country_choice,))
+        """, (country_choice,)) #this lets us choose which country the user wants to see
         rows = cursor.fetchall()
 
-        if not rows:
+        if not rows: #this is so if there are no dramas this is shown from the said country
             eg.msgbox(f"No dramas found from {country_choice}.", "Country Results")
             return
 
@@ -316,7 +316,7 @@ def add_drama(cursor, conn):
         eg.exceptionbox(msg=f"Failed to add drama: {e}", title="Database Error")
 
 if __name__ == "__main__":
-    conn , cursor = setup_database()
+    conn , cursor = setup_database() #this sets up the main menu
 
     if not conn:
         exit()
@@ -325,7 +325,7 @@ if __name__ == "__main__":
         choice = eg.buttonbox(
             "Welcome to the Drama Database what would you like to do?",
             "Main Menu",
-            choices=["Show all drama","Country","Year","Watched Status","Rating","Add Drama","Exit"]
+            choices=["Show all drama","Country","Year","Watched Status","Rating","Add Drama","Exit"] #the choices the user can make
         )
         if choice == "Show all drama":
             show_all(cursor)
@@ -359,7 +359,7 @@ if __name__ == "__main__":
             rating_choice = eg.buttonbox(
                 "Pick a rating",
                 "Rating",
-                choices=[str(i) for i in range(1, 11)]
+                choices=[str(i) for i in range(1, 11)] 
             )
             if rating_choice:
                 show_rating(cursor, int(rating_choice))
