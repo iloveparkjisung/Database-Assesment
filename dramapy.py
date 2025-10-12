@@ -16,6 +16,23 @@ def print_parameter_query(fields:str, where:str, parameter):
     print(tabulate(results,fields.split(",")))
     db.close()  
 
+def print_query(view_name:str):
+    ''' Prints the specified view from the database in a table '''
+    # Set up the connection to the database
+    db = sqlite3.connect(DB_NAME)
+    cursor = db.cursor()
+    # Get the results from the view
+    sql = "SELECT * FROM '" + view_name + "'"
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    # Get the field names to use as headings
+    field_names = "SELECT name from pragma_table_info('" + view_name + "') AS tblInfo"
+    cursor.execute(field_names)
+    headings = list(sum(cursor.fetchall(),()))
+    # Print the results in a table with the headings
+    print(tabulate(results,headings))
+    db.close()
+
 TABLES = (" drama "
            "LEFT JOIN country ON drama.country_id = country.country_id "
            "LEFT JOIN release_year ON drama.release_id = release_year.release_id "
